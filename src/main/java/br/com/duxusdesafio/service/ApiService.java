@@ -25,6 +25,13 @@ public class ApiService {
      */
     public Time timeDaData(LocalDate data, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
+
+        for (Time time : todosOsTimes) {
+            if (time.getData().equals(data)) {
+                return time;
+            }
+        }
+
         return null;
     }
 
