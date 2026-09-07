@@ -1,10 +1,12 @@
 package br.com.duxusdesafio.service;
 
+import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +43,42 @@ public class ApiService {
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+
+        Integrante maisUsado = null;
+        int maiorQuantidade = 0;
+
+        Map<Integrante, Integer> contagem = new HashMap<>();
+
+        for (Time time : todosOsTimes) {
+            boolean dentroDoPeriodo = !time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal);
+
+            if (dentroDoPeriodo) {
+
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
+
+                    Integrante integrante = composicao.getIntegrante();
+
+                    if (contagem.containsKey(integrante)) {
+                        int quantidadeAtual = contagem.get(integrante);
+                        contagem.put(integrante, quantidadeAtual + 1);
+                    }else {
+                        contagem.put(integrante, 1);
+                    }
+
+                    int quantidadeDoIntegrante = contagem.get(integrante);
+
+                    if (quantidadeDoIntegrante > maiorQuantidade) {
+                        maiorQuantidade = quantidadeDoIntegrante;
+                        maisUsado = integrante;
+                    }
+                }
+
+            }
+
+        }
+
+
+        return maisUsado;
     }
 
     /**
