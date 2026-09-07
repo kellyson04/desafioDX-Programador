@@ -6,9 +6,7 @@ import br.com.duxusdesafio.model.Time;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Service que possuirá as regras de negócio para o processamento dos dados
@@ -87,7 +85,50 @@ public class ApiService {
      */
     public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+
+        Map<Set<Integrante>, Integer> contagem = new HashMap<>();
+
+        List<Integrante> integrantesMaisRecorrentes = null;
+        int maiorQuantidade = 0;
+
+        for (Time time : todosOsTimes) {
+            boolean dentroDoPeriodo = !time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal);
+
+            if (dentroDoPeriodo) {
+                List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
+                List<Integrante> integrantes = new ArrayList<>();
+
+                for (ComposicaoTime composicao : composicaoTime) {
+                    Integrante integrante = composicao.getIntegrante();
+                    integrantes.add(integrante);
+                }
+
+                Set<Integrante> composicaoComSet = new HashSet<>(integrantes);
+
+                if (contagem.containsKey(composicaoComSet)) {
+                    int quantidadeAtual = contagem.get(composicaoComSet);
+                    contagem.put(composicaoComSet, quantidadeAtual + 1);
+                }else {
+                    contagem.put(composicaoComSet, 1);
+                }
+
+                int quantidadeDaComposicao =  contagem.get(composicaoComSet);
+
+                if (quantidadeDaComposicao > maiorQuantidade) {
+                    maiorQuantidade = quantidadeDaComposicao;
+                    integrantesMaisRecorrentes = integrantes;
+                }
+            }
+        }
+
+        List<String> nomes = new ArrayList<>();
+        if (integrantesMaisRecorrentes != null) {
+            for (Integrante integrante : integrantesMaisRecorrentes) {
+                nomes.add(integrante.getNome());
+            }
+        }
+
+        return nomes;
     }
 
     /**
