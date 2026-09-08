@@ -267,6 +267,7 @@ public class ApiService {
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
         Map<String, Long> contagem = new HashMap<>();
+        Set<Integrante> integrantesContados = new HashSet<>();
 
         for (Time time : todosOsTimes) {
 
@@ -281,13 +282,16 @@ public class ApiService {
 
                 for (ComposicaoTime composicao : time.getComposicaoTime()) {
                     Integrante integrante = composicao.getIntegrante();
-                    String funcao = integrante.getFuncao();
 
-                    if (contagem.containsKey(funcao)) {
-                        long quantidadeAtual = contagem.get(funcao);
-                        contagem.put(funcao, quantidadeAtual + 1L);
-                    } else {
-                        contagem.put(funcao, 1L);
+                    if (integrantesContados.add(integrante)) {
+                        String funcao = integrante.getFuncao();
+
+                        if (contagem.containsKey(funcao)) {
+                            long quantidadeAtual = contagem.get(funcao);
+                            contagem.put(funcao, quantidadeAtual + 1L);
+                        } else {
+                            contagem.put(funcao, 1L);
+                        }
                     }
                 }
             }
