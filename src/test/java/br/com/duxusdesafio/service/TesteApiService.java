@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(DataProviderRunner.class)
 public class TesteApiService {
@@ -246,4 +247,84 @@ public class TesteApiService {
         assertEquals(esperado, contagemPorFuncao);
     }
 
+    @Test
+    public void deveRetornarNullQuandoNaoExistirTimeNaData() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        List<Time> todosOsTimes = dados.getTodosOsTimes();
+        LocalDate dataInexistente = LocalDate.of(2000, 1, 1);
+
+        Time resultado = apiService.timeDaData(
+                dataInexistente,
+                todosOsTimes
+        );
+
+        assertNull(resultado);
+    }
+
+    @Test
+    public void deveBuscarIntegranteMaisUsadoSemLimiteInicial() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        List<Time> todosOsTimes = dados.getTodosOsTimes();
+
+        Integrante resultado = apiService.integranteMaisUsado(
+                null,
+                data1995,
+                todosOsTimes
+        );
+
+        assertEquals(dados.getDenis_rodman(), resultado);
+    }
+
+    @Test
+    public void deveBuscarClubeMaisRecorrenteSemLimiteFinal() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        List<Time> todosOsTimes = dados.getTodosOsTimes();
+
+        String resultado = apiService.clubeMaisRecorrente(
+                data1993,
+                null,
+                todosOsTimes
+        );
+
+        assertEquals(dados.getClubeChicagoBulls(), resultado);
+    }
+
+    @Test
+    public void deveContarTodosOsClubesQuandoPeriodoForNulo() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        List<Time> todosOsTimes = dados.getTodosOsTimes();
+
+        Map<String, Long> esperado = new HashMap<>();
+        esperado.put(dados.getClubeChicagoBulls(), 2L);
+        esperado.put(dados.getClubeDetroitPistons(), 1L);
+
+        Map<String, Long> resultado =
+                apiService.contagemDeClubesNoPeriodo(
+                        null,
+                        null,
+                        todosOsTimes
+                );
+
+        assertEquals(esperado, resultado);
+    }
+
+    @Test
+    public void deveRetornarContagemVaziaQuandoNaoExistiremTimes() {
+        List<Time> todosOsTimes = new ArrayList<>();
+
+        Map<String, Long> esperado = new HashMap<>();
+
+        Map<String, Long> resultado =
+                apiService.contagemDeClubesNoPeriodo(
+                        data1993,
+                        data1995,
+                        todosOsTimes
+                );
+
+        assertEquals(esperado, resultado);
+    }
 }
