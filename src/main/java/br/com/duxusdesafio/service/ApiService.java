@@ -48,7 +48,12 @@ public class ApiService {
         Map<Integrante, Integer> contagem = new HashMap<>();
 
         for (Time time : todosOsTimes) {
-            boolean dentroDoPeriodo = !time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal);
+            boolean dentroDoPeriodo =
+                    (dataInicial == null
+                            || !time.getData().isBefore(dataInicial))
+                            &&
+                            (dataFinal == null
+                                    || !time.getData().isAfter(dataFinal));
 
             if (dentroDoPeriodo) {
 
@@ -92,7 +97,12 @@ public class ApiService {
         int maiorQuantidade = 0;
 
         for (Time time : todosOsTimes) {
-            boolean dentroDoPeriodo = !time.getData().isBefore(dataInicial) && !time.getData().isAfter(dataFinal);
+            boolean dentroDoPeriodo =
+                    (dataInicial == null
+                            || !time.getData().isBefore(dataInicial))
+                            &&
+                            (dataFinal == null
+                                    || !time.getData().isAfter(dataFinal));
 
             if (dentroDoPeriodo) {
                 List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
