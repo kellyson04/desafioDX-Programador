@@ -1,11 +1,17 @@
+spring:
+  application:
+    name: duxusdesafio
 
-spring.application.name=duxusdesafio
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/duxus_desafio}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD}
 
-spring.datasource.url=${DB_URL:jdbc:postgresql://localhost:5432/duxus_desafio}
-spring.datasource.username=${DB_USERNAME:postgres}
-spring.datasource.password=${DB_PASSWORD}
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
