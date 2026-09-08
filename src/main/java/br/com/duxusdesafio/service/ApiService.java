@@ -224,7 +224,30 @@ public class ApiService {
      */
     public Map<String, Long> contagemDeClubesNoPeriodo(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+        Map<String, Long> contagem = new HashMap<>();
+
+        for (Time time : todosOsTimes) {
+
+            boolean dentroDoPeriodo =
+                    (dataInicial == null
+                            || !time.getData().isBefore(dataInicial))
+                            &&
+                            (dataFinal == null
+                                    || !time.getData().isAfter(dataFinal));
+
+            if (dentroDoPeriodo) {
+                String clube = time.getNomeDoClube();
+
+                if (contagem.containsKey(clube)) {
+                    long quantidadeAtual = contagem.get(clube);
+                    contagem.put(clube, quantidadeAtual + 1L);
+                } else {
+                    contagem.put(clube, 1L);
+                }
+            }
+        }
+
+        return contagem;
     }
 
     /**
@@ -233,7 +256,34 @@ public class ApiService {
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+        Map<String, Long> contagem = new HashMap<>();
+
+        for (Time time : todosOsTimes) {
+
+            boolean dentroDoPeriodo =
+                    (dataInicial == null
+                            || !time.getData().isBefore(dataInicial))
+                            &&
+                            (dataFinal == null
+                                    || !time.getData().isAfter(dataFinal));
+
+            if (dentroDoPeriodo) {
+
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
+                    Integrante integrante = composicao.getIntegrante();
+                    String funcao = integrante.getFuncao();
+
+                    if (contagem.containsKey(funcao)) {
+                        long quantidadeAtual = contagem.get(funcao);
+                        contagem.put(funcao, quantidadeAtual + 1L);
+                    } else {
+                        contagem.put(funcao, 1L);
+                    }
+                }
+            }
+        }
+
+        return contagem;
     }
 
 }
