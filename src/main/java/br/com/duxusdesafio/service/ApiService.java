@@ -136,7 +136,45 @@ public class ApiService {
      */
     public String funcaoMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
         // TODO Implementar método seguindo as instruções!
-        return null;
+
+        Map<String, Integer> contagem = new HashMap<>();
+
+        String funcaoMaisRecorrente = null;
+        int maiorQuantidade = 0;
+
+        for (Time time : todosOsTimes) {
+
+            boolean dentroDoPeriodo =
+                    (dataInicial == null
+                            || !time.getData().isBefore(dataInicial))
+                            &&
+                            (dataFinal == null
+                                    || !time.getData().isAfter(dataFinal));
+
+            if (dentroDoPeriodo) {
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
+
+                    Integrante integrante = composicao.getIntegrante();
+                    String funcao = integrante.getFuncao();
+
+                    if (contagem.containsKey(funcao)) {
+                        int quantidadeAtual = contagem.get(funcao);
+                        contagem.put(funcao, quantidadeAtual + 1);
+                    } else {
+                        contagem.put(funcao, 1);
+                    }
+
+                    int quantidadeDaFuncao = contagem.get(funcao);
+
+                    if (quantidadeDaFuncao > maiorQuantidade) {
+                        maiorQuantidade = quantidadeDaFuncao;
+                        funcaoMaisRecorrente = funcao;
+                    }
+                }
+            }
+        }
+
+        return funcaoMaisRecorrente;
     }
 
     /**
@@ -144,7 +182,40 @@ public class ApiService {
      */
     public String clubeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
         // TODO Implementar método seguindo as instruções!
-        return null;
+        Map<String, Integer> contagem = new HashMap<>();
+
+        String clubeMaisRecorrente = null;
+        int maiorQuantidade = 0;
+
+        for (Time time : todosOsTimes) {
+
+            boolean dentroDoPeriodo =
+                    (dataInicial == null
+                            || !time.getData().isBefore(dataInicial))
+                            &&
+                            (dataFinal == null
+                                    || !time.getData().isAfter(dataFinal));
+
+            if (dentroDoPeriodo) {
+                String clube = time.getNomeDoClube();
+
+                if (contagem.containsKey(clube)) {
+                    int quantidadeAtual = contagem.get(clube);
+                    contagem.put(clube, quantidadeAtual + 1);
+                } else {
+                    contagem.put(clube, 1);
+                }
+
+                int quantidadeDoClube = contagem.get(clube);
+
+                if (quantidadeDoClube > maiorQuantidade) {
+                    maiorQuantidade = quantidadeDoClube;
+                    clubeMaisRecorrente = clube;
+                }
+            }
+        }
+
+        return clubeMaisRecorrente;
     }
 
 
