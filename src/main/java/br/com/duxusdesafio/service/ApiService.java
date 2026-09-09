@@ -86,9 +86,10 @@ public class ApiService {
      * Vai retornar uma lista com os nomes dos integrantes do time mais recorrente dentro do período.
      * OBS: Time é o clube + composição em determinada data
      */
-    public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
+    public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time>
+            todosOsTimes) {
 
-        Map<Set<Integrante>, Integer> contagem = new HashMap<>();
+        Map<String, Map<Set<Integrante>, Integer>> contagem = new HashMap<>();
 
         List<Integrante> integrantesMaisRecorrentes = null;
         int maiorQuantidade = 0;
@@ -102,24 +103,31 @@ public class ApiService {
                                     || !time.getData().isAfter(dataFinal));
 
             if (dentroDoPeriodo) {
-                List<ComposicaoTime> composicaoTime = time.getComposicaoTime();
+                String clube = time.getNomeDoClube();
+
                 List<Integrante> integrantes = new ArrayList<>();
 
-                for (ComposicaoTime composicao : composicaoTime) {
+                for (ComposicaoTime composicao : time.getComposicaoTime()) {
                     Integrante integrante = composicao.getIntegrante();
                     integrantes.add(integrante);
                 }
 
                 Set<Integrante> composicaoComSet = new HashSet<>(integrantes);
 
-                if (contagem.containsKey(composicaoComSet)) {
-                    int quantidadeAtual = contagem.get(composicaoComSet);
-                    contagem.put(composicaoComSet, quantidadeAtual + 1);
-                }else {
-                    contagem.put(composicaoComSet, 1);
+                if (!contagem.containsKey(clube)) {
+                    contagem.put(clube, new HashMap<>());
                 }
 
-                int quantidadeDaComposicao =  contagem.get(composicaoComSet);
+                Map<Set<Integrante>, Integer> contagemDoClube = contagem.get(clube);
+
+                if (contagemDoClube.containsKey(composicaoComSet)) {
+                    int quantidadeAtual = contagemDoClube.get(composicaoComSet);
+                    contagemDoClube.put(composicaoComSet, quantidadeAtual + 1);
+                } else {
+                    contagemDoClube.put(composicaoComSet, 1);
+                }
+
+                int quantidadeDaComposicao = contagemDoClube.get(composicaoComSet);
 
                 if (quantidadeDaComposicao > maiorQuantidade) {
                     maiorQuantidade = quantidadeDaComposicao;
@@ -129,6 +137,7 @@ public class ApiService {
         }
 
         List<String> nomes = new ArrayList<>();
+
         if (integrantesMaisRecorrentes != null) {
             for (Integrante integrante : integrantesMaisRecorrentes) {
                 nomes.add(integrante.getNome());
