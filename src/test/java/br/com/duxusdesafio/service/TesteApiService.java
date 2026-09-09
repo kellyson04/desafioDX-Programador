@@ -1,5 +1,6 @@
 package br.com.duxusdesafio.service;
 
+import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -357,5 +358,52 @@ public class TesteApiService {
         );
 
         assertNull(resultado);
+    }
+
+    @Test
+    public void deveSepararComposicoesIguaisDeClubesDiferentes() {
+        // Escalações fictícias para testar os mesmos jogadores em clubes diferentes.
+        Integrante faker = new Integrante("Faker", "mid", new ArrayList<>());
+        Integrante zeus = new Integrante("Zeus", "top", new ArrayList<>());
+        Integrante bin = new Integrante("Bin", "top", new ArrayList<>());
+        Integrante canyon = new Integrante("Canyon", "jungle", new ArrayList<>());
+
+        List<Time> todosOsTimes = new ArrayList<>();
+
+        String[] clubes = {
+                "T1", "T1",
+                "BLG", "BLG",
+                "Gen.G", "Gen.G", "Gen.G"
+        };
+
+        for (int i = 0; i < clubes.length; i++) {
+            List<ComposicaoTime> composicoes = new ArrayList<>();
+
+            Time time = new Time(
+                    clubes[i],
+                    LocalDate.of(2025, 1, 1).plusDays(i),
+                    composicoes
+            );
+
+            if (clubes[i].equals("Gen.G")) {
+                composicoes.add(new ComposicaoTime(time, bin));
+                composicoes.add(new ComposicaoTime(time, canyon));
+            } else {
+                composicoes.add(new ComposicaoTime(time, faker));
+                composicoes.add(new ComposicaoTime(time, zeus));
+            }
+
+            todosOsTimes.add(time);
+        }
+
+        List<String> resultado = apiService.integrantesDoTimeMaisRecorrente(
+                null,
+                null,
+                todosOsTimes
+        );
+
+        List<String> esperado = Arrays.asList("Bin", "Canyon");
+
+        assertEquals(esperado, resultado);
     }
 }
