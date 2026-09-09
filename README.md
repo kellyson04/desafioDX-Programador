@@ -170,3 +170,8 @@ O importante é a tela estar funcional e a beleza não será avaliada.
 - https://www.devmedia.com.br/rest-tutorial/28912
 - https://www.baeldung.com/rest-with-spring-series
 - https://www.baeldung.com/jackson-vs-gson
+
+
+## Execução e testes
+
+Consulte [Como executar e testar](COMO_EXECUTAR.md).
