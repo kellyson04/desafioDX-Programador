@@ -327,4 +327,20 @@ public class TesteApiService {
 
         assertEquals(esperado, resultado);
     }
+
+    @Test
+    public void deveContarClubeQuandoDataInicialEFinalForemIguais() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        Map<String, Long> esperado = new HashMap<>();
+        esperado.put(dados.getClubeDetroitPistons(), 1L);
+
+        Map<String, Long> resultado = apiService.contagemDeClubesNoPeriodo(
+                data1993,
+                data1993,
+                dados.getTodosOsTimes()
+        );
+
+        assertEquals(esperado, resultado);
+    }
 }
