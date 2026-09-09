@@ -343,4 +343,19 @@ public class TesteApiService {
 
         assertEquals(esperado, resultado);
     }
+
+    @Test
+    public void deveRetornarNullQuandoNaoExistiremClubesNoPeriodo() {
+        DadosParaTesteApiService dados = new DadosParaTesteApiService();
+
+        LocalDate dataInicial = LocalDate.of(1996, 1, 1);
+
+        String resultado = apiService.clubeMaisRecorrente(
+                dataInicial,
+                null,
+                dados.getTodosOsTimes()
+        );
+
+        assertNull(resultado);
+    }
 }
