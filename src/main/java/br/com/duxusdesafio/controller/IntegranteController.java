@@ -23,9 +23,7 @@ public class IntegranteController {
     }
 
     @PostMapping
-    public ResponseEntity<Integrante> cadastrar(
-            @RequestBody @Valid Integrante integrante) {
-
+    public ResponseEntity<Integrante> cadastrar(@RequestBody @Valid Integrante integrante) {
         Integrante integranteCriado =
                 integranteService.cadastrar(integrante);
 
