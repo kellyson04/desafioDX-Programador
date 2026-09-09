@@ -24,7 +24,6 @@ public class ApiService {
      * Vai retornar um Time, com a composição do time daquela data
      */
     public Time timeDaData(LocalDate data, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
 
         for (Time time : todosOsTimes) {
             if (time.getData().equals(data)) {
@@ -40,7 +39,6 @@ public class ApiService {
      * dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
 
         Integrante maisUsado = null;
         int maiorQuantidade = 0;
@@ -89,7 +87,6 @@ public class ApiService {
      * OBS: Time é o clube + composição em determinada data
      */
     public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
 
         Map<Set<Integrante>, Integer> contagem = new HashMap<>();
 
@@ -145,7 +142,6 @@ public class ApiService {
      * Vai retornar a função mais recorrente nos times dentro do período
      */
     public String funcaoMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
 
         Map<String, Integer> contagem = new HashMap<>();
 
@@ -191,7 +187,7 @@ public class ApiService {
      * Vai retornar o nome do Clube mais comum dentro do período
      */
     public String clubeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
+
         Map<String, Integer> contagem = new HashMap<>();
 
         String clubeMaisRecorrente = null;
@@ -233,7 +229,7 @@ public class ApiService {
      * Vai retornar o número (quantidade) de aparições de cada Clube participante no período
      */
     public Map<String, Long> contagemDeClubesNoPeriodo(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
+
         Map<String, Long> contagem = new HashMap<>();
 
         for (Time time : todosOsTimes) {
@@ -265,7 +261,7 @@ public class ApiService {
      * Dica - pense sobre repetições!
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
+
         Map<String, Long> contagem = new HashMap<>();
         Set<Integrante> integrantesContados = new HashSet<>();
 
